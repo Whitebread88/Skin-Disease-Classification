@@ -61,7 +61,7 @@ def data_gen_(img):
 
 def load_models():
 
-    model = load_model(MODELSPATH + 'dermnet.h5')
+    model = load_model(MODELSPATH + '\dermnet.h5')
     return model
 
 
