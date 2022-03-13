@@ -1,245 +1,169 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 2,
-   "id": "01a75f6c-fb82-4e87-82b1-362d22c16967",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# To run streamlit - go to cmd administrator\n",
-    "# type 'cd C:\\Users\\FKW-HP\\Desktop\\AFoong\\Aaron F\\FYP'\n",
-    "# 'streamlit run Streamlit.py'\n",
-    "\n",
-    "import streamlit as st\n",
-    "import pandas as pd"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 4,
-   "id": "6dee8fa5-6a7e-45bf-829d-90de28542e23",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "import streamlit as st\n",
-    "import numpy as np\n",
-    "import pandas as pd\n",
-    "import keras\n",
-    "from keras.utils.np_utils import to_categorical\n",
-    "from keras.models import Sequential, load_model\n",
-    "from keras import backend as K\n",
-    "import os\n",
-    "import time\n",
-    "import io\n",
-    "from PIL import Image\n",
-    "import plotly.express as px"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 12,
-   "id": "b0e749ae-fa3f-4321-9b9f-e7f35ade41ca",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "\n",
-    "MODELSPATH = 'C:\\\\Users\\\\FKW-HP\\\\Desktop\\\\AFoong\\\\Aaron F\\\\FYP'\n",
-    "# DATAPATH = './data/'\n",
-    "\n",
-    "\n",
-    "def render_header():\n",
-    "    st.write(\"\"\"\n",
-    "        <p align=\"center\"> \n",
-    "            <H1> Skin cancer Analyzer \n",
-    "        </p>\n",
-    "    \"\"\", unsafe_allow_html=True)\n",
-    "\n",
-    "\n",
-    "@st.cache\n",
-    "# def load_mekd():\n",
-    "#     img = Image.open(DATAPATH + '/ISIC_0024312.jpg')\n",
-    "#     return img\n",
-    "\n",
-    "\n",
-    "@st.cache\n",
-    "def data_gen(x):\n",
-    "    img = np.asarray(Image.open(x).resize((100, 75)))\n",
-    "    x_test = np.asarray(img.tolist())\n",
-    "    x_test_mean = np.mean(x_test)\n",
-    "    x_test_std = np.std(x_test)\n",
-    "    x_test = (x_test - x_test_mean) / x_test_std\n",
-    "    x_validate = x_test.reshape(1, 75, 100, 3)\n",
-    "\n",
-    "    return x_validate\n",
-    "\n",
-    "\n",
-    "@st.cache\n",
-    "def data_gen_(img):\n",
-    "    img = img.reshape(100, 75)\n",
-    "    x_test = np.asarray(img.tolist())\n",
-    "    x_test_mean = np.mean(x_test)\n",
-    "    x_test_std = np.std(x_test)\n",
-    "    x_test = (x_test - x_test_mean) / x_test_std\n",
-    "    x_validate = x_test.reshape(1, 75, 100, 3)\n",
-    "\n",
-    "    return x_validate\n",
-    "\n",
-    "\n",
-    "def load_models():\n",
-    "\n",
-    "    model = load_model(MODELSPATH + 'dermnet.h5')\n",
-    "    return model\n",
-    "\n",
-    "\n",
-    "@st.cache\n",
-    "def predict(x_test, model):\n",
-    "    Y_pred = model.predict(x_test)\n",
-    "    ynew = model.predict_proba(x_test)\n",
-    "    K.clear_session()\n",
-    "    ynew = np.round(ynew, 2)\n",
-    "    ynew = ynew*100\n",
-    "    y_new = ynew[0].tolist()\n",
-    "    Y_pred_classes = np.argmax(Y_pred, axis=1)\n",
-    "    K.clear_session()\n",
-    "    return y_new, Y_pred_classes\n",
-    "\n",
-    "\n",
-    "@st.cache\n",
-    "def display_prediction(y_new):\n",
-    "    \"\"\"Display image and preditions from model\"\"\"\n",
-    "\n",
-    "    result = pd.DataFrame({'Probability': y_new}, index=np.arange(7))\n",
-    "    result = result.reset_index()\n",
-    "    result.columns = ['Classes', 'Probability']\n",
-    "    lesion_type_dict = {2: 'Benign keratosis-like lesions', 4: 'Melanocytic nevi', 3: 'Dermatofibroma',\n",
-    "                        5: 'Melanoma', 6: 'Vascular lesions', 1: 'Basal cell carcinoma', 0: 'Actinic keratoses'}\n",
-    "    result[\"Classes\"] = result[\"Classes\"].map(lesion_type_dict)\n",
-    "    return result\n",
-    "\n",
-    "\n",
-    "def main():\n",
-    "    st.sidebar.header('Skin cancer Analyzer')\n",
-    "    st.sidebar.subheader('Choose a page to proceed:')\n",
-    "    page = st.sidebar.selectbox(\"\", [\"Sample Data\", \"Upload Your Image\"])\n",
-    "\n",
-    "    if page == \"Sample Data\":\n",
-    "        st.header(\"Sample Data Prediction for Skin Cancer\")\n",
-    "        st.markdown(\"\"\"\n",
-    "        **Now, this is probably why you came here. Let's get you some Predictions**\n",
-    "        You need to choose Sample Data\n",
-    "        \"\"\")\n",
-    "\n",
-    "        mov_base = ['Sample Data I']\n",
-    "        movies_chosen = st.multiselect('Choose Sample Data', mov_base)\n",
-    "\n",
-    "        if len(movies_chosen) > 1:\n",
-    "            st.error('Please select Sample Data')\n",
-    "        if len(movies_chosen) == 1:\n",
-    "            st.success(\"You have selected Sample Data\")\n",
-    "        else:\n",
-    "            st.info('Please select Sample Data')\n",
-    "\n",
-    "        if len(movies_chosen) == 1:\n",
-    "            if st.checkbox('Show Sample Data'):\n",
-    "                st.info(\"Showing Sample data---->>>\")\n",
-    "                image = load_mekd()\n",
-    "                st.image(image, caption='Sample Data', use_column_width=True)\n",
-    "                st.subheader(\"Choose Training Algorithm!\")\n",
-    "                if st.checkbox('Keras'):\n",
-    "                    model = load_models()\n",
-    "                    st.success(\"Hooray !! Keras Model Loaded!\")\n",
-    "                    if st.checkbox('Show Prediction Probablity on Sample Data'):\n",
-    "                        x_test = data_gen(DATAPATH + '/ISIC_0024312.jpg')\n",
-    "                        y_new, Y_pred_classes = predict(x_test, model)\n",
-    "                        result = display_prediction(y_new)\n",
-    "                        st.write(result)\n",
-    "                        if st.checkbox('Display Probability Graph'):\n",
-    "                            fig = px.bar(result, x=\"Classes\",\n",
-    "                                         y=\"Probability\", color='Classes')\n",
-    "                            st.plotly_chart(fig, use_container_width=True)\n",
-    "\n",
-    "    if page == \"Upload Your Image\":\n",
-    "\n",
-    "        st.header(\"Upload Your Image\")\n",
-    "\n",
-    "        file_path = st.file_uploader('Upload an image', type=['png', 'jpg'])\n",
-    "\n",
-    "        if file_path is not None:\n",
-    "            x_test = data_gen(file_path)\n",
-    "            image = Image.open(file_path)\n",
-    "            img_array = np.array(image)\n",
-    "\n",
-    "            st.success('File Upload Success!!')\n",
-    "        else:\n",
-    "            st.info('Please upload Image file')\n",
-    "\n",
-    "        if st.checkbox('Show Uploaded Image'):\n",
-    "            st.info(\"Showing Uploaded Image ---->>>\")\n",
-    "            st.image(img_array, caption='Uploaded Image',\n",
-    "                     use_column_width=True)\n",
-    "            st.subheader(\"Choose Training Algorithm!\")\n",
-    "            if st.checkbox('Keras'):\n",
-    "                model = load_models()\n",
-    "                st.success(\"Hooray !! Keras Model Loaded!\")\n",
-    "                if st.checkbox('Show Prediction Probablity for Uploaded Image'):\n",
-    "                    y_new, Y_pred_classes = predict(x_test, model)\n",
-    "                    result = display_prediction(y_new)\n",
-    "                    st.write(result)\n",
-    "                    if st.checkbox('Display Probability Graph'):\n",
-    "                        fig = px.bar(result, x=\"Classes\",\n",
-    "                                     y=\"Probability\", color='Classes')\n",
-    "                        st.plotly_chart(fig, use_container_width=True)\n",
-    "\n",
-    "\n",
-    "\n",
-    "main()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "fceaeb42-e269-43e8-a710-a2598a4d8737",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "cc9c371a-ce04-4db8-9cbb-38cad882f560",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "70856155-7050-4af7-a708-be213559a3c2",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3 (ipykernel)",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.8.8"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+# To run streamlit - go to cmd administrator
+# type 'cd C:\Users\FKW-HP\Desktop\AFoong\Aaron F\FYP'
+# 'streamlit run Streamlit.py'
+
+import streamlit as st
+import pandas as pd
+import streamlit as st
+import numpy as np
+import pandas as pd
+import keras
+from keras.utils.np_utils import to_categorical
+from keras.models import Sequential, load_model
+from keras import backend as K
+import os
+import time
+import io
+from PIL import Image
+import plotly.express as px
+
+MODELSPATH = 'C:\\Users\\FKW-HP\\Desktop\\AFoong\\Aaron F\\FYP'
+# DATAPATH = './data/'
+
+
+def render_header():
+    st.write("""
+        <p align="center"> 
+            <H1> Skin cancer Analyzer 
+        </p>
+    """, unsafe_allow_html=True)
+
+
+@st.cache
+# def load_mekd():
+#     img = Image.open(DATAPATH + '/ISIC_0024312.jpg')
+#     return img
+
+
+@st.cache
+def data_gen(x):
+    img = np.asarray(Image.open(x).resize((100, 75)))
+    x_test = np.asarray(img.tolist())
+    x_test_mean = np.mean(x_test)
+    x_test_std = np.std(x_test)
+    x_test = (x_test - x_test_mean) / x_test_std
+    x_validate = x_test.reshape(1, 75, 100, 3)
+
+    return x_validate
+
+
+@st.cache
+def data_gen_(img):
+    img = img.reshape(100, 75)
+    x_test = np.asarray(img.tolist())
+    x_test_mean = np.mean(x_test)
+    x_test_std = np.std(x_test)
+    x_test = (x_test - x_test_mean) / x_test_std
+    x_validate = x_test.reshape(1, 75, 100, 3)
+
+    return x_validate
+
+
+def load_models():
+
+    model = load_model(MODELSPATH + 'dermnet.h5')
+    return model
+
+
+@st.cache
+def predict(x_test, model):
+    Y_pred = model.predict(x_test)
+    ynew = model.predict_proba(x_test)
+    K.clear_session()
+    ynew = np.round(ynew, 2)
+    ynew = ynew*100
+    y_new = ynew[0].tolist()
+    Y_pred_classes = np.argmax(Y_pred, axis=1)
+    K.clear_session()
+    return y_new, Y_pred_classes
+
+
+@st.cache
+def display_prediction(y_new):
+    """Display image and preditions from model"""
+
+    result = pd.DataFrame({'Probability': y_new}, index=np.arange(7))
+    result = result.reset_index()
+    result.columns = ['Classes', 'Probability']
+    lesion_type_dict = {2: 'Benign keratosis-like lesions', 4: 'Melanocytic nevi', 3: 'Dermatofibroma',
+                        5: 'Melanoma', 6: 'Vascular lesions', 1: 'Basal cell carcinoma', 0: 'Actinic keratoses'}
+    result["Classes"] = result["Classes"].map(lesion_type_dict)
+    return result
+
+
+def main():
+    st.sidebar.header('Skin cancer Analyzer')
+    st.sidebar.subheader('Choose a page to proceed:')
+    page = st.sidebar.selectbox("", ["Sample Data", "Upload Your Image"])
+
+    if page == "Sample Data":
+        st.header("Sample Data Prediction for Skin Cancer")
+        st.markdown("""
+        **Now, this is probably why you came here. Let's get you some Predictions**
+        You need to choose Sample Data
+        """)
+
+        mov_base = ['Sample Data I']
+        movies_chosen = st.multiselect('Choose Sample Data', mov_base)
+
+        if len(movies_chosen) > 1:
+            st.error('Please select Sample Data')
+        if len(movies_chosen) == 1:
+            st.success("You have selected Sample Data")
+        else:
+            st.info('Please select Sample Data')
+
+        if len(movies_chosen) == 1:
+            if st.checkbox('Show Sample Data'):
+                st.info("Showing Sample data---->>>")
+                image = load_mekd()
+                st.image(image, caption='Sample Data', use_column_width=True)
+                st.subheader("Choose Training Algorithm!")
+                if st.checkbox('Keras'):
+                    model = load_models()
+                    st.success("Hooray !! Keras Model Loaded!")
+                    if st.checkbox('Show Prediction Probablity on Sample Data'):
+                        x_test = data_gen(DATAPATH + '/ISIC_0024312.jpg')
+                        y_new, Y_pred_classes = predict(x_test, model)
+                        result = display_prediction(y_new)
+                        st.write(result)
+                        if st.checkbox('Display Probability Graph'):
+                            fig = px.bar(result, x="Classes",
+                                         y="Probability", color='Classes')
+                            st.plotly_chart(fig, use_container_width=True)
+
+    if page == "Upload Your Image":
+
+        st.header("Upload Your Image")
+
+        file_path = st.file_uploader('Upload an image', type=['png', 'jpg'])
+
+        if file_path is not None:
+            x_test = data_gen(file_path)
+            image = Image.open(file_path)
+            img_array = np.array(image)
+
+            st.success('File Upload Success!!')
+        else:
+            st.info('Please upload Image file')
+
+        if st.checkbox('Show Uploaded Image'):
+            st.info("Showing Uploaded Image ---->>>")
+            st.image(img_array, caption='Uploaded Image',
+                     use_column_width=True)
+            st.subheader("Choose Training Algorithm!")
+            if st.checkbox('Keras'):
+                model = load_models()
+                st.success("Hooray !! Keras Model Loaded!")
+                if st.checkbox('Show Prediction Probablity for Uploaded Image'):
+                    y_new, Y_pred_classes = predict(x_test, model)
+                    result = display_prediction(y_new)
+                    st.write(result)
+                    if st.checkbox('Display Probability Graph'):
+                        fig = px.bar(result, x="Classes",
+                                     y="Probability", color='Classes')
+                        st.plotly_chart(fig, use_container_width=True)
+
+
+
+main()
