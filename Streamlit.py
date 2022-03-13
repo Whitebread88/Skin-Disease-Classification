@@ -17,22 +17,10 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 4,
    "id": "6dee8fa5-6a7e-45bf-829d-90de28542e23",
    "metadata": {},
-   "outputs": [
-    {
-     "ename": "ModuleNotFoundError",
-     "evalue": "No module named 'plotly'",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[1;31mModuleNotFoundError\u001b[0m                       Traceback (most recent call last)",
-      "\u001b[1;32m~\\AppData\\Local\\Temp/ipykernel_8920/1339772109.py\u001b[0m in \u001b[0;36m<module>\u001b[1;34m\u001b[0m\n\u001b[0;32m     10\u001b[0m \u001b[1;32mimport\u001b[0m \u001b[0mio\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m     11\u001b[0m \u001b[1;32mfrom\u001b[0m \u001b[0mPIL\u001b[0m \u001b[1;32mimport\u001b[0m \u001b[0mImage\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m---> 12\u001b[1;33m \u001b[1;32mimport\u001b[0m \u001b[0mplotly\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mexpress\u001b[0m \u001b[1;32mas\u001b[0m \u001b[0mpx\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m",
-      "\u001b[1;31mModuleNotFoundError\u001b[0m: No module named 'plotly'"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "import streamlit as st\n",
     "import numpy as np\n",
@@ -50,26 +38,14 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": 8,
    "id": "b0e749ae-fa3f-4321-9b9f-e7f35ade41ca",
    "metadata": {},
-   "outputs": [
-    {
-     "ename": "NameError",
-     "evalue": "name 'st' is not defined",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[1;31mNameError\u001b[0m                                 Traceback (most recent call last)",
-      "\u001b[1;32m~\\AppData\\Local\\Temp/ipykernel_8920/2342881916.py\u001b[0m in \u001b[0;36m<module>\u001b[1;34m\u001b[0m\n\u001b[0;32m     11\u001b[0m \u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m     12\u001b[0m \u001b[1;33m\u001b[0m\u001b[0m\n\u001b[1;32m---> 13\u001b[1;33m \u001b[1;33m@\u001b[0m\u001b[0mst\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mcache\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0m\u001b[0;32m     14\u001b[0m \u001b[1;32mdef\u001b[0m \u001b[0mload_mekd\u001b[0m\u001b[1;33m(\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m:\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n\u001b[0;32m     15\u001b[0m     \u001b[0mimg\u001b[0m \u001b[1;33m=\u001b[0m \u001b[0mImage\u001b[0m\u001b[1;33m.\u001b[0m\u001b[0mopen\u001b[0m\u001b[1;33m(\u001b[0m\u001b[0mDATAPATH\u001b[0m \u001b[1;33m+\u001b[0m \u001b[1;34m'/ISIC_0024312.jpg'\u001b[0m\u001b[1;33m)\u001b[0m\u001b[1;33m\u001b[0m\u001b[1;33m\u001b[0m\u001b[0m\n",
-      "\u001b[1;31mNameError\u001b[0m: name 'st' is not defined"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "\n",
-    "MODELSPATH = './models/'\n",
-    "DATAPATH = './data/'\n",
+    "MODELSPATH = 'C:\\\\Users\\\\FKW-HP\\\\Desktop\\\\AFoong\\\\Aaron F\\\\FYP'\n",
+    "# DATAPATH = './data/'\n",
     "\n",
     "\n",
     "def render_header():\n",
@@ -81,9 +57,9 @@
     "\n",
     "\n",
     "@st.cache\n",
-    "def load_mekd():\n",
-    "    img = Image.open(DATAPATH + '/ISIC_0024312.jpg')\n",
-    "    return img\n",
+    "# def load_mekd():\n",
+    "#     img = Image.open(DATAPATH + '/ISIC_0024312.jpg')\n",
+    "#     return img\n",
     "\n",
     "\n",
     "@st.cache\n",
@@ -112,7 +88,7 @@
     "\n",
     "def load_models():\n",
     "\n",
-    "    model = load_model(MODELSPATH + 'model.h5')\n",
+    "    model = load_model(MODELSPATH + 'dermnet.h5')\n",
     "    return model\n",
     "\n",
     "\n",
