@@ -38,7 +38,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 8,
+   "execution_count": 12,
    "id": "b0e749ae-fa3f-4321-9b9f-e7f35ade41ca",
    "metadata": {},
    "outputs": [],
@@ -192,8 +192,8 @@
     "                        st.plotly_chart(fig, use_container_width=True)\n",
     "\n",
     "\n",
-    "if __name__ == \"__main__\":\n",
-    "    main()"
+    "\n",
+    "main()"
    ]
   },
   {
