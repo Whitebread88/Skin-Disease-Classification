@@ -17,7 +17,6 @@ import io
 from PIL import Image
 import plotly.express as px
 
-MODELSPATH = 'C:\\Users\\FKW-HP\\Desktop\\AFoong\\Aaron F\\FYP'
 # DATAPATH = './data/'
 
 
@@ -61,7 +60,7 @@ def data_gen_(img):
 
 def load_models():
 
-    model = load_model(MODELSPATH + '\dermnet.h5')
+    model = keras.models.load_model('dermnet.h5')
     return model
 
 
