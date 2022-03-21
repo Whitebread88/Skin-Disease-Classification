@@ -34,24 +34,24 @@ def load_mekd():
 
 @st.cache
 def data_gen(x):
-    img = np.asarray(Image.open(x).resize((100, 75)))
+    img = np.asarray(Image.open(x).resize((128, 128)))
     x_test = np.asarray(img.tolist())
     x_test_mean = np.mean(x_test)
     x_test_std = np.std(x_test)
     x_test = (x_test - x_test_mean) / x_test_std
-    x_validate = x_test.reshape(1, 75, 100, 3)
+    x_validate = x_test.reshape(1, 128, 128, 3)
 
     return x_validate
 
 
 @st.cache
 def data_gen_(img):
-    img = img.reshape(100, 75)
+    img = img.reshape(128, 128)
     x_test = np.asarray(img.tolist())
     x_test_mean = np.mean(x_test)
     x_test_std = np.std(x_test)
     x_test = (x_test - x_test_mean) / x_test_std
-    x_validate = x_test.reshape(1, 75, 100, 3)
+    x_validate = x_test.reshape(1, 128, 128, 3)
 
     return x_validate
 
@@ -90,12 +90,12 @@ def display_prediction(y_new):
 
 def start():
 
-    st.sidebar.header('Skin cancer Analyzer')
+    st.sidebar.header('Skin Disease Classification')
     st.sidebar.subheader('Choose a page to proceed:')
     page = st.sidebar.selectbox("", ["Sample Data", "Upload Your Image"])
 
     if page == "Sample Data":
-        st.header("Sample Data Prediction for Skin Cancer")
+        st.header("Sample Data Skin Disease Classification")
         st.markdown("""
         **Now, this is probably why you came here. Let's get you some Predictions**
         You need to choose Sample Data
