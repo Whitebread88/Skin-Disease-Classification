@@ -17,21 +17,19 @@ import io
 from PIL import Image
 import plotly.express as px
 
-# DATAPATH = './data/'
-
 
 def render_header():
     st.write("""
         <p align="center"> 
-            <H1> Skin cancer Analyzer 
+            <H1> Skin Disease Classification 
         </p>
     """, unsafe_allow_html=True)
 
 
 @st.cache
-# def load_mekd():
-#     img = Image.open(DATAPATH + '/ISIC_0024312.jpg')
-#     return img
+def load_mekd():
+    img = Image.open("C:/Users/FKW-HP/Downloads/test photo.jpg")
+    return img
 
 
 @st.cache
@@ -90,7 +88,8 @@ def display_prediction(y_new):
     return result
 
 
-def main():
+def start():
+
     st.sidebar.header('Skin cancer Analyzer')
     st.sidebar.subheader('Choose a page to proceed:')
     page = st.sidebar.selectbox("", ["Sample Data", "Upload Your Image"])
@@ -122,7 +121,7 @@ def main():
                     model = load_models()
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
-                        x_test = data_gen(DATAPATH + '/ISIC_0024312.jpg')
+                        x_test = data_gen("C:/Users/FKW-HP/Downloads/test photo.jpg")
                         y_new, Y_pred_classes = predict(x_test, model)
                         result = display_prediction(y_new)
                         st.write(result)
@@ -164,5 +163,4 @@ def main():
                         st.plotly_chart(fig, use_container_width=True)
 
 
-
-main()
+start()
