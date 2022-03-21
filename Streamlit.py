@@ -28,7 +28,7 @@ def render_header():
 
 @st.cache
 def load_mekd():
-    img = Image.open("C:/Users/FKW-HP/Downloads/test photo.jpg")
+    img = Image.open('test photo.jpg')
     return img
 
 
@@ -121,7 +121,7 @@ def start():
                     model = load_models()
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
-                        x_test = data_gen("C:/Users/FKW-HP/Downloads/test photo.jpg")
+                        x_test = data_gen('test photo.jpg')
                         y_new, Y_pred_classes = predict(x_test, model)
                         result = display_prediction(y_new)
                         st.write(result)
