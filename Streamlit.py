@@ -16,6 +16,7 @@ import time
 import io
 from PIL import Image
 import plotly.express as px
+import cv2
 
 
 def render_header():
@@ -33,27 +34,16 @@ def load_mekd():
 
 
 @st.cache
-def data_gen(x):
-    img = np.asarray(Image.open(x).resize((128, 128)))
-    x_test = np.asarray(img.tolist())
-    x_test_mean = np.mean(x_test)
-    x_test_std = np.std(x_test)
-    x_test = (x_test - x_test_mean) / x_test_std
-    x_validate = x_test.reshape(1, 128, 128, 3)
+def data_gen_upload(x):
+    width = 64
+    height = 64
+    img = cv2.imread(x)
+    inp = cv2.resize(img, (width , height ))
+    rgb = cv2.cvtColor(inp, cv2.COLOR_BGR2RGB)
+    rgb_tensor = tf.convert_to_tensor(rgb, dtype=tf.float32)
+    rgb_tensor = tf.expand_dims(rgb_tensor , 0)
 
-    return x_validate
-
-
-@st.cache
-def data_gen_(img):
-    img = img.reshape(128, 128)
-    x_test = np.asarray(img.tolist())
-    x_test_mean = np.mean(x_test)
-    x_test_std = np.std(x_test)
-    x_test = (x_test - x_test_mean) / x_test_std
-    x_validate = x_test.reshape(1, 128, 128, 3)
-
-    return x_validate
+    return rgb_tensor
 
 
 def load_models():
@@ -63,27 +53,33 @@ def load_models():
 
 
 @st.cache
-def predict(x_test, model):
-    Y_pred = model.predict(x_test)
-    ynew = model.predict_proba(x_test)
-    K.clear_session()
-    ynew = np.round(ynew, 2)
-    ynew = ynew*100
-    y_new = ynew[0].tolist()
-    Y_pred_classes = np.argmax(Y_pred, axis=1)
-    K.clear_session()
-    return y_new, Y_pred_classes
-
-
-@st.cache
-def display_prediction(y_new):
+def display_prediction(X_class):
     """Display image and preditions from model"""
-
-    result = pd.DataFrame({'Probability': y_new}, index=np.arange(7))
+    
+    result = pd.DataFrame({'Probability': X_class}, index=np.arange(23))
     result = result.reset_index()
     result.columns = ['Classes', 'Probability']
-    lesion_type_dict = {2: 'Benign keratosis-like lesions', 4: 'Melanocytic nevi', 3: 'Dermatofibroma',
-                        5: 'Melanoma', 6: 'Vascular lesions', 1: 'Basal cell carcinoma', 0: 'Actinic keratoses'}
+    lesion_type_dict = {'Nail Fungus and other Nail Disease':0,'Tinea Ringworm Candidiasis and other Fungal Infections':1,
+               'Eczema':2,'Psoriasis pictures Lichen Planus':3, 
+               'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions':4, 
+               'Warts Molluscum and other Viral Infections':5, 
+               'Seborrheic Keratoses and other Benign Tumors': 6,
+               'Acne and Rosacea':7,
+               'Light Diseases and Disorders of Pigmentation':8,
+               'Bullous Disease':9,
+               'Melanoma Skin Cancer Nevi and Moles':10,
+               'Exanthems and Drug Eruptions':11,
+               'Vasculitis':12,
+               'Scabies Lyme Disease and other Infestations and Bites':13,
+               'Atopic Dermatitis':14,
+               'Vascular Tumors':15,
+               'Lupus and other Connective Tissue diseases':16,
+               'Cellulitis Impetigo and other Bacterial Infections':17,
+               'Systemic Disease':18,
+               'Hair Loss  Alopecia and other Hair Diseases':19,
+               'Herpes HPV and other STDs':20,
+               'Poison Ivy  and other Contact Dermatitis':21,
+               'Urticaria Hives':22,}
     result["Classes"] = result["Classes"].map(lesion_type_dict)
     return result
 
@@ -121,9 +117,10 @@ def start():
                     model = load_models()
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
-                        x_test = data_gen('test photo.jpg')
-                        y_new, Y_pred_classes = predict(x_test, model)
-                        result = display_prediction(y_new)
+                        x_test = data_gen_upload('test photo.jpg')
+                        pred_classes = model.predict(x_test)
+                        classes_x=np.argmax(pred_classes,axis=1)
+                        result = display_prediction(classes_x)
                         st.write(result)
                         if st.checkbox('Display Probability Graph'):
                             fig = px.bar(result, x="Classes",
@@ -137,7 +134,7 @@ def start():
         file_path = st.file_uploader('Upload an image', type=['png', 'jpg'])
 
         if file_path is not None:
-            x_test = data_gen(file_path)
+            x_test = data_gen_upload(file_path)
             image = Image.open(file_path)
             img_array = np.array(image)
 
@@ -154,8 +151,9 @@ def start():
                 model = load_models()
                 st.success("Hooray !! Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity for Uploaded Image'):
-                    y_new, Y_pred_classes = predict(x_test, model)
-                    result = display_prediction(y_new)
+                    Y_pred_classes = model.predict(x_test)
+                    classes_x=np.argmax(pred_classes,axis=1)
+                    result = display_prediction(classes_x)
                     st.write(result)
                     if st.checkbox('Display Probability Graph'):
                         fig = px.bar(result, x="Classes",
