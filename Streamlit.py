@@ -34,7 +34,6 @@ def load_mekd():
     return img
 
 
-@st.cache
 def data_gen_upload(x):
     width = 64
     height = 64
