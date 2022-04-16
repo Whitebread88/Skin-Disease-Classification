@@ -51,7 +51,7 @@ def data_gen_upload(x):
 
 
 def load_model():
-    model = tf.keras.models.load_model("dermnet.h5", custom_objects={"tf": tf}, Compile=False)
+    model = tf.keras.models.load_model("dermnet.h5", custom_objects={"tf": tf}, compile=False)
     return model
 
 
