@@ -50,8 +50,7 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
-def load_models():
-
+def load_model():
     model = tf.keras.models.load_model('dermnet.h5')
     return model
 
@@ -88,7 +87,7 @@ def display_prediction(X_class):
     return result
 
 
-def start():
+def main():
 
     st.sidebar.header('Skin Disease Classification')
     st.sidebar.subheader('Choose a page to proceed:')
@@ -118,7 +117,7 @@ def start():
                 st.image(image, caption='Sample Data', use_column_width=True)
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
-                    model = load_models()
+                    model = load_model()
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
@@ -152,7 +151,7 @@ def start():
                      use_column_width=True)
             st.subheader("Choose Training Algorithm!")
             if st.checkbox('Keras'):
-                model = load_models()
+                model = load_model()
                 st.success("Hooray !! Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity for Uploaded Image'):
                     Y_pred_classes = model.predict(x_test)
@@ -165,4 +164,4 @@ def start():
                         st.plotly_chart(fig, use_container_width=True)
 
 
-start()
+main()
