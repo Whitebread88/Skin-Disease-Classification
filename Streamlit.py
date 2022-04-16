@@ -39,7 +39,7 @@ def data_gen_upload(x):
     width = 64
     height = 64
     img = Image.open(x)
-    inp = cv2.resize(img, (width , height))
+    st.image(img, caption=None, width=width, use_column_width=True)
     rgb = cv2.cvtColor(inp, cv2.COLOR_BGR2RGB)
     rgb_tensor = tf.convert_to_tensor(rgb, dtype=tf.float32)
     rgb_tensor = tf.expand_dims(rgb_tensor , 0)
