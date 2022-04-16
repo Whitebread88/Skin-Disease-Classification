@@ -38,9 +38,11 @@ def data_gen_upload(x):
     width = 64
     height = 64
     img = Image.open(x)
-    img = st.image(img, caption=None, width=width, use_column_width=True)
+    st.image(img, caption=None, width=width, use_column_width=True)
+    img_array = np.array(img)
+    # cv2.imwrite('out.jpg', cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR))
     # rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    rgb_tensor = tf.convert_to_tensor(img, dtype=tf.float32)
+    rgb_tensor = tf.convert_to_tensor(img_array, dtype=tf.float32)
     rgb_tensor = tf.expand_dims(rgb_tensor , 0)
 
     return rgb_tensor
@@ -48,7 +50,7 @@ def data_gen_upload(x):
 
 def load_models():
 
-    model = keras.models.load_model('dermnet.h5')
+    model = tf.keras.models.load_model('dermnet.h5')
     return model
 
 
