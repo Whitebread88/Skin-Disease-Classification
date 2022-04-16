@@ -39,8 +39,8 @@ def data_gen_upload(x):
     height = 64
     img = Image.open(x)
     st.image(img, caption=None, width=width, use_column_width=True)
-    rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    rgb_tensor = tf.convert_to_tensor(rgb, dtype=tf.float32)
+    # rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    rgb_tensor = tf.convert_to_tensor(img, dtype=tf.float32)
     rgb_tensor = tf.expand_dims(rgb_tensor , 0)
 
     return rgb_tensor
