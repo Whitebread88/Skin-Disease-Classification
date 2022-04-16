@@ -38,7 +38,7 @@ def load_mekd():
 def data_gen_upload(x):
     width = 64
     height = 64
-    img = cv2.imread(x)
+    img = cv2.imread(r"x")
     inp = cv2.resize(img, (width , height ))
     rgb = cv2.cvtColor(inp, cv2.COLOR_BGR2RGB)
     rgb_tensor = tf.convert_to_tensor(rgb, dtype=tf.float32)
