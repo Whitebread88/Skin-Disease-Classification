@@ -9,6 +9,9 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 import keras
+from tensorflow.keras import models, layers
+from tensorflow.keras.layers import Reshape
+from tensorflow.keras.layers import Rescaling
 from keras.utils.np_utils import to_categorical
 from keras.models import Sequential, load_model
 from keras import backend as K
