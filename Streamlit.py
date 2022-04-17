@@ -115,7 +115,7 @@ def main():
                 image = load_mekd()
                 st.image(image, caption='Sample Data', use_column_width=True)
                 if st.checkbox('Analyse'):
-                    num_image = image.numpy().astype('uint8')
+                    num_image = np.array(image)
                     x_sobel = cv2.Sobel(num_image, cv2.CV_64F, 1, 0, ksize=7)
                     st.image(x_sobel, caption='Contrast', use_column_width=True)
                     canny = cv2.Canny(num_image, 100, 250)
@@ -155,7 +155,7 @@ def main():
                      use_column_width=True)
             st.subheader("Show Disease Characteristics with Image Processing")
             if st.checkbox('Analyse'):
-                num_image = upload_image.numpy().astype('uint8')
+                num_image = np.array(upload_image)
                 x_sobel = cv2.Sobel(num_image, cv2.CV_64F, 1, 0, ksize=7)
                 st.image(x_sobel, caption='Contrast', use_column_width=True)
                 canny = cv2.Canny(num_image, 100, 250)
