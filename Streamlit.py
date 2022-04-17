@@ -124,7 +124,16 @@ def main():
                     contour, hier = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
                     st.info("Count of Contours  = " + str(len(contour)))
                     cont = cv2.drawContours(num_image, contour, -30, (0,255,0), 1)
-                    st.image(cont, caption='Outline', use_column_width=True, clamp=True)
+                    st.image(cont, caption='Contours', use_column_width=True, clamp=True)
+                    blob_image = cv2.cvtColor(num_image, cv2.COLOR_BGR2GRAY)
+                    # using the SIRF algorithm to detect keypoints in the image
+                    detector = cv2.SimpleBlobDetector_create()
+                    features = cv2.SIFT_create()
+                    keypoints = features.detect(blob_image, None)
+                    # drawKeypoints function is used to draw keypoints
+                    output_image = cv2.drawKeypoints(blob_image, keypoints, 0, (255, 0, 0),
+                    flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+                    st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
                     model = load_model()
@@ -165,6 +174,20 @@ def main():
                 st.image(x_sobel, caption='X-Sobel / Contrast', use_column_width=True, clamp=True, channels='BGR')
                 canny = cv2.Canny(num_image, 100, 250)
                 st.image(canny, caption='Outline', use_column_width=True, clamp=True)
+                edged = cv2.Canny(num_image, 30, 200)
+                contour, hier = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+                st.info("Count of Contours  = " + str(len(contour)))
+                cont = cv2.drawContours(num_image, contour, -30, (0,255,0), 1)
+                st.image(cont, caption='Contours', use_column_width=True, clamp=True)
+                blob_image = cv2.cvtColor(num_image, cv2.COLOR_BGR2GRAY)
+                # using the SIRF algorithm to detect keypoints in the image
+                detector = cv2.SimpleBlobDetector_create()
+                features = cv2.SIFT_create()
+                keypoints = features.detect(blob_image, None)
+                # drawKeypoints function is used to draw keypoints
+                output_image = cv2.drawKeypoints(blob_image, keypoints, 0, (255, 0, 0),
+                flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+                st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
             st.subheader("Choose Training Algorithm!")
             if st.checkbox('Keras'):
                 model = load_model()
