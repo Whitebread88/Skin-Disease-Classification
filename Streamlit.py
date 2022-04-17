@@ -120,6 +120,10 @@ def main():
                     st.image(x_sobel, caption='X-Sobel / Contrast', use_column_width=True, clamp=True, channels='BGR')
                     canny = cv2.Canny(num_image, 100, 250)
                     st.image(canny, caption='Outline', use_column_width=True, clamp=True)
+                    edged = cv2.Canny(num_image, 30, 200)
+                    contour, hier = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+                    st.info("Count of Contours  = " + str(len(contour)))
+                    cv2.drawContours(num_image, contour, -30, (0,255,0), 1)
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
                     model = load_model()
