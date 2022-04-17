@@ -86,7 +86,6 @@ def display_prediction(X_class):
     result["Classes"] = result["Classes"].map(lesion_type_dict)
     return result
 
-
 def main():
 
     st.sidebar.header('Skin Disease Classification')
@@ -115,6 +114,11 @@ def main():
                 st.info("Showing Sample data---->>>")
                 image = load_mekd()
                 st.image(image, caption='Sample Data', use_column_width=True)
+                if st.checkbox('Analyse'):
+                    x_sobel = cv2.Sobel(image, cv2.CV_64F, 1, 0, ksize=7)
+                    st.image(x_sobel, caption='Contrast', use_column_width=True)
+                    canny = cv2.Canny(image, 100, 250)
+                    st.image(canny, caption='Outline', use_column_width=True)
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
                     model = load_model()
@@ -139,7 +143,6 @@ def main():
         if file_path is not None:
             x_test = data_gen_upload(file_path)
             upload_image = Image.open(file_path)
-            img_array = np.array(upload_image)
 
             st.success('File Upload Success!!')
         else:
@@ -147,8 +150,14 @@ def main():
 
         if st.checkbox('Show Uploaded Image'):
             st.info("Showing Uploaded Image ---->>>")
-            st.image(img_array, caption='Uploaded Image',
+            st.image(upload_image, caption='Uploaded Image',
                      use_column_width=True)
+            st.subheader("Show Disease Characteristics with Image Processing")
+            if st.checkbox('Analyse'):
+                x_sobel = cv2.Sobel(upload_image, cv2.CV_64F, 1, 0, ksize=7)
+                st.image(x_sobel, caption='Contrast', use_column_width=True)
+                canny = cv2.Canny(upload_image, 100, 250)
+                st.image(canny, caption='Outline', use_column_width=True)
             st.subheader("Choose Training Algorithm!")
             if st.checkbox('Keras'):
                 model = load_model()
