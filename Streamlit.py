@@ -50,7 +50,7 @@ def data_gen_upload(x):
 
 
 def load_model():
-    model = tf.keras.models.load_model('./dermnet.h5')
+    model = tf.keras.models.load_model('./my_tf_model')
     return model
 
 
