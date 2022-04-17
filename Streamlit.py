@@ -117,9 +117,9 @@ def main():
                 if st.checkbox('Analyse'):
                     num_image = np.array(image)
                     x_sobel = cv2.Sobel(num_image, cv2.CV_64F, 1, 0, ksize=7)
-                    st.image(x_sobel, caption='Contrast', use_column_width=True, clamp=True, channels='BGR')
+                    st.image(x_sobel, caption='X-Sobel / Contrast', use_column_width=True, clamp=True, channels='BGR')
                     canny = cv2.Canny(num_image, 100, 250)
-                    st.image(canny, caption='Outline', use_column_width=True, clamp=True, channels='BGR')
+                    st.image(canny, caption='Outline', use_column_width=True, clamp=True)
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
                     model = load_model()
@@ -157,9 +157,9 @@ def main():
             if st.checkbox('Analyse'):
                 num_image = np.array(upload_image)
                 x_sobel = cv2.Sobel(num_image, cv2.CV_64F, 1, 0, ksize=7)
-                st.image(x_sobel, caption='Contrast', use_column_width=True, clamp=True, channels='BGR')
+                st.image(x_sobel, caption='X-Sobel / Contrast', use_column_width=True, clamp=True, channels='BGR')
                 canny = cv2.Canny(num_image, 100, 250)
-                st.image(canny, caption='Outline', use_column_width=True, clamp=True, channels='BGR')
+                st.image(canny, caption='Outline', use_column_width=True, clamp=True)
             st.subheader("Choose Training Algorithm!")
             if st.checkbox('Keras'):
                 model = load_model()
