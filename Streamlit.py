@@ -40,7 +40,6 @@ def data_gen_upload(x):
     width = 64
     height = 64
     img = Image.open(x)
-    st.image(img, caption=None, width=width, use_column_width=True)
     img_array = np.array(img)
     # cv2.imwrite('out.jpg', cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR))
     # rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -51,7 +50,7 @@ def data_gen_upload(x):
 
 
 def load_model():
-    model = tf.keras.models.load_model('dermnet.hdf5', custom_objects={"tf": tf}, compile=False)
+    model = tf.keras.models.load_model('my_tf_model')
     return model
 
 
@@ -158,7 +157,6 @@ def main():
         if file_path is not None:
             x_test = data_gen_upload(file_path)
             upload_image = Image.open(file_path)
-
             st.success('File Upload Success!!')
         else:
             st.info('Please upload Image file')
