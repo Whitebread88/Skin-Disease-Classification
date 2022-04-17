@@ -123,7 +123,8 @@ def main():
                     edged = cv2.Canny(num_image, 30, 200)
                     contour, hier = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
                     st.info("Count of Contours  = " + str(len(contour)))
-                    cv2.drawContours(num_image, contour, -30, (0,255,0), 1)
+                    cont = cv2.drawContours(num_image, contour, -30, (0,255,0), 1)
+                    st.image(cont, caption='Outline', use_column_width=True, clamp=True)
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
                     model = load_model()
