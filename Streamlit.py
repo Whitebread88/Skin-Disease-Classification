@@ -48,36 +48,12 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
-# @st.cache
-# def display_prediction(X_class):
-#     """Display image and preditions from model"""
-    
-#     lesion_type_dict = {'Nail Fungus and other Nail Disease':0,'Tinea Ringworm Candidiasis and other Fungal Infections':1,
-#                'Eczema':2,'Psoriasis pictures Lichen Planus':3, 
-#                'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions':4, 
-#                'Warts Molluscum and other Viral Infections':5, 
-#                'Seborrheic Keratoses and other Benign Tumors': 6,
-#                'Acne and Rosacea':7,
-#                'Light Diseases and Disorders of Pigmentation':8,
-#                'Bullous Disease':9,
-#                'Melanoma Skin Cancer Nevi and Moles':10,
-#                'Exanthems and Drug Eruptions':11,
-#                'Vasculitis':12,
-#                'Scabies Lyme Disease and other Infestations and Bites':13,
-#                'Atopic Dermatitis':14,
-#                'Vascular Tumors':15,
-#                'Lupus and other Connective Tissue diseases':16,
-#                'Cellulitis Impetigo and other Bacterial Infections':17,
-#                'Systemic Disease':18,
-#                'Hair Loss  Alopecia and other Hair Diseases':19,
-#                'Herpes HPV and other STDs':20,
-#                'Poison Ivy  and other Contact Dermatitis':21,
-#                'Urticaria Hives':22,}
-#     result["Classes"] = result["Classes"].map(lesion_type_dict)
-#     return result
-
-
-def predict(model, img):
+@st.cache
+def load_classes():
+    """Load the 23 types/classes of skin diseases"""
+    result = pd.DataFrame({X_Class: 'confidence'}, index=np.arange(23))
+    result = result.reset_index()
+    result.columns = ['Classes', 'confidence']
     lesion_type_dict = {'Nail Fungus and other Nail Disease':0,'Tinea Ringworm Candidiasis and other Fungal Infections':1,
                'Eczema':2,'Psoriasis pictures Lichen Planus':3, 
                'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions':4, 
@@ -100,9 +76,13 @@ def predict(model, img):
                'Poison Ivy  and other Contact Dermatitis':21,
                'Urticaria Hives':22,}
     result["Classes"] = result["Classes"].map(lesion_type_dict)
+
+
+def predict(model, img):
+    load_classes()
     predictions = model.predict(img)
     predictions = predictions.argmax(axis=1)
-    predicted_class = result[predictions[0]]
+    predicted_class = result[predictions]
     confidence = round(100 * (np.max(predictions[0])), 2)
     return predicted_class, confidence
 
