@@ -48,9 +48,9 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
-def display_prediction(X_Class):
+def display_prediction(confidence):
     """Load the 23 types/classes of skin diseases"""
-    result = pd.DataFrame({X_Class: 'confidence'}, index=np.arange(23))
+    result = pd.DataFrame({confidence: 'confidence'}, index=np.arange(23))
     result = result.reset_index()
     result.columns = ['Classes', 'confidence']
     lesion_type_dict = {'Nail Fungus and other Nail Disease':0,'Tinea Ringworm Candidiasis and other Fungal Infections':1,
