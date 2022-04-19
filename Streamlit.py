@@ -36,9 +36,10 @@ def data_gen_upload(x):
     width = 128
     height = 128
     img = Image.open(x)
+    img = np.array(img)
     inp = cv2.resize(img, (width , height ))
     rgb = cv2.cvtColor(inp, cv2.COLOR_BGR2RGB)
-    # img_array = np.array(inp)
+   
     # cv2.imwrite('out.jpg', cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR))
     rgb = cv2.cvtColor(rgb, cv2.COLOR_BGR2RGB)
     rgb_tensor = tf.convert_to_tensor(rgb, dtype=tf.float32)
