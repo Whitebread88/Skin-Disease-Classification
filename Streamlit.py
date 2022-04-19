@@ -48,18 +48,36 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
-# def load_model():
-#     model = tf.keras.models.load_model('my_tf_model')
-#     return model
-
-
-@st.cache
-def display_prediction(X_class):
-    """Display image and preditions from model"""
+# @st.cache
+# def display_prediction(X_class):
+#     """Display image and preditions from model"""
     
-    result = pd.DataFrame({'Probability': X_class}, index=np.arange(23))
-    result = result.reset_index()
-    result.columns = ['Classes', 'Probability']
+#     lesion_type_dict = {'Nail Fungus and other Nail Disease':0,'Tinea Ringworm Candidiasis and other Fungal Infections':1,
+#                'Eczema':2,'Psoriasis pictures Lichen Planus':3, 
+#                'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions':4, 
+#                'Warts Molluscum and other Viral Infections':5, 
+#                'Seborrheic Keratoses and other Benign Tumors': 6,
+#                'Acne and Rosacea':7,
+#                'Light Diseases and Disorders of Pigmentation':8,
+#                'Bullous Disease':9,
+#                'Melanoma Skin Cancer Nevi and Moles':10,
+#                'Exanthems and Drug Eruptions':11,
+#                'Vasculitis':12,
+#                'Scabies Lyme Disease and other Infestations and Bites':13,
+#                'Atopic Dermatitis':14,
+#                'Vascular Tumors':15,
+#                'Lupus and other Connective Tissue diseases':16,
+#                'Cellulitis Impetigo and other Bacterial Infections':17,
+#                'Systemic Disease':18,
+#                'Hair Loss  Alopecia and other Hair Diseases':19,
+#                'Herpes HPV and other STDs':20,
+#                'Poison Ivy  and other Contact Dermatitis':21,
+#                'Urticaria Hives':22,}
+#     result["Classes"] = result["Classes"].map(lesion_type_dict)
+#     return result
+
+
+def predict(model, img):
     lesion_type_dict = {'Nail Fungus and other Nail Disease':0,'Tinea Ringworm Candidiasis and other Fungal Infections':1,
                'Eczema':2,'Psoriasis pictures Lichen Planus':3, 
                'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions':4, 
@@ -81,8 +99,12 @@ def display_prediction(X_class):
                'Herpes HPV and other STDs':20,
                'Poison Ivy  and other Contact Dermatitis':21,
                'Urticaria Hives':22,}
-    result["Classes"] = result["Classes"].map(lesion_type_dict)
-    return result
+    predictions = model.predict(img)
+    predictions = predictions.argmax(axis=1)
+    predicted_class = lesion_type_dict[predictions[0]]
+    confidence = round(100 * (np.max(predictions[0])), 2)
+    return predicted_class, confidence
+
 
 def main():
 
@@ -138,11 +160,9 @@ def main():
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
-                        pred_classes = cnn_model.predict(x_test)
-                        pred_classes = pred_classes.argmax(axis=1)
-                        st.write(pred_classes)
-                        # classes_x=np.argmax(pred_classes,axis=1)
-                        # result = display_prediction(classes_x)
+                        predicted_class, confidence = predict(cnn_model, x_test)
+                        plt.title(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
+                        # st.write(pred_classes)
                         # st.write(result)
                         # if st.checkbox('Display Probability Graph'):
                         #     fig = px.bar(result, x="Classes",
