@@ -48,7 +48,6 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
-@st.cache
 def display_prediction(X_Class):
     """Load the 23 types/classes of skin diseases"""
     result = pd.DataFrame({X_Class: 'confidence'}, index=np.arange(23))
@@ -76,8 +75,6 @@ def display_prediction(X_Class):
                'Poison Ivy  and other Contact Dermatitis':21,
                'Urticaria Hives':22,}
     result["Classes"] = result["Classes"].map(lesion_type_dict)
-    predicted_class = result[predictions]
-    confidence = round(100 * (np.max(predictions)), 2)
     return confidence
 
 
@@ -136,13 +133,14 @@ def main():
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
                         predictions = cnn_model.predict(x_test)
-                        predictions = predictions.argmax(axis=1)
+                        normalized_prediction = predictions.argmax(axis=1)
                         
 #                         predictions = np.round(predictions, 2)
 #                         predictions = predictions*100
 #                         new_predictions = predictions[0].tolist()
 #                         Y_pred_classes = np.argmax(Y_pred, axis=1)
-                        result = display_prediction(predictions)
+                        confidence = round(100 * (np.max(predictions)), 2)
+                        result = display_prediction(confidence)
                         # st.write(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
                         # st.write(result)
                         # st.write(result)
