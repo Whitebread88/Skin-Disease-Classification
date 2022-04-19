@@ -139,13 +139,15 @@ def main():
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
                         pred_classes = cnn_model.predict(x_test)
-                        classes_x=np.argmax(pred_classes,axis=1)
-                        result = display_prediction(classes_x)
-                        st.write(result)
-                        if st.checkbox('Display Probability Graph'):
-                            fig = px.bar(result, x="Classes",
-                                         y="Probability", color='Classes')
-                            st.plotly_chart(fig, use_container_width=True)
+                        pred_classes = pred_classes.argmax(axis=1)
+                        st.write(pred_classes)
+                        # classes_x=np.argmax(pred_classes,axis=1)
+                        # result = display_prediction(classes_x)
+                        # st.write(result)
+                        # if st.checkbox('Display Probability Graph'):
+                        #     fig = px.bar(result, x="Classes",
+                        #                  y="Probability", color='Classes')
+                        #     st.plotly_chart(fig, use_container_width=True)
 
     if page == "Upload Your Image":
 
