@@ -6,6 +6,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from PIL import Image
+import tensorflow as tf
 import plotly.express as px
 import cv2
 # import tensorflow.keras.backend.tensorflow_backend as tb
