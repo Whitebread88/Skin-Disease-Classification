@@ -15,8 +15,8 @@ from tensorflow.keras.layers import Reshape
 from PIL import Image
 import plotly.express as px
 import cv2
-import tensorflow.keras.backend.tensorflow_backend as tb
-tb._SYMBOLIC_SCOPE.value = True
+# import tensorflow.keras.backend.tensorflow_backend as tb
+# tb._SYMBOLIC_SCOPE.value = True
 
 
 
@@ -50,7 +50,7 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
-@st.cache
+
 def display_prediction(pred_prob):
     """Load the 23 types/classes of skin diseases"""
     result = pd.DataFrame({pred_prob: 'confidence'}, index=np.arange(23))
@@ -81,7 +81,7 @@ def display_prediction(pred_prob):
     return result
 
 
-@st.cache
+
 def predict(x_test, model):
     Y_pred = model.predict(x_test)
     Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
