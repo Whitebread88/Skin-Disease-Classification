@@ -137,6 +137,11 @@ def main():
                         x_test = data_gen_upload('test photo.jpg')
                         predictions = cnn_model.predict(x_test)
                         predictions = predictions.argmax(axis=1)
+                        
+#                         predictions = np.round(predictions, 2)
+#                         predictions = predictions*100
+#                         new_predictions = predictions[0].tolist()
+#                         Y_pred_classes = np.argmax(Y_pred, axis=1)
                         result = display_prediction(predictions)
                         # st.write(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
                         # st.write(result)
