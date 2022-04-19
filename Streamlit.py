@@ -135,7 +135,7 @@ def main():
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
-                        predictions = model.predict(x_test)
+                        predictions = cnn_model.predict(x_test)
                         predictions = predictions.argmax(axis=1)
                         result = display_prediction(predictions)
                         # st.write(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
