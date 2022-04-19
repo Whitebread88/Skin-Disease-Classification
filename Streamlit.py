@@ -84,7 +84,7 @@ def predict(x_test, model):
     Y_pred = np.round(Y_pred, 2)
     Y_pred = Y_pred*100
     Y_pred = Y_pred[0].tolist()
-    Y_pred_classes = np.argmax(Y_pred, axis=1)
+    Y_pred_classes = Y_pred.argmax(axis=1)
     return ynew, Y_pred_classes
 
 
