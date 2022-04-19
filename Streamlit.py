@@ -15,6 +15,8 @@ from tensorflow.keras.layers import Reshape
 from PIL import Image
 import plotly.express as px
 import cv2
+import keras.backend.tensorflow_backend as tb
+tb._SYMBOLIC_SCOPE.value = True
 
 
 
