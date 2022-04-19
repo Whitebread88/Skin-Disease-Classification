@@ -99,9 +99,10 @@ def predict(model, img):
                'Herpes HPV and other STDs':20,
                'Poison Ivy  and other Contact Dermatitis':21,
                'Urticaria Hives':22,}
+    result["Classes"] = result["Classes"].map(lesion_type_dict)
     predictions = model.predict(img)
     predictions = predictions.argmax(axis=1)
-    predicted_class = lesion_type_dict[predictions[0]]
+    predicted_class = result[predictions[0]]
     confidence = round(100 * (np.max(predictions[0])), 2)
     return predicted_class, confidence
 
@@ -156,7 +157,7 @@ def main():
                     st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
-                    cnn_model = tf.keras.models.load_model('dermnet.h5')
+                    cnn_model = tf.keras.models.load_model('my_tf_model')
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
