@@ -39,10 +39,10 @@ def data_gen_upload(x):
     img_array = np.array(img)
     # cv2.imwrite('out.jpg', cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR))
     # rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    rgb_tensor = tf.convert_to_tensor(img_array, dtype=tf.float32)
-    rgb_tensor = tf.expand_dims(rgb_tensor , 0)
+    # rgb_tensor = tf.convert_to_tensor(img_array, dtype=tf.float32)
+    # rgb_tensor = tf.expand_dims(rgb_tensor , 0)
 
-    return rgb_tensor
+    return img_array
 
 
 # def load_model():
