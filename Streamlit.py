@@ -48,11 +48,11 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
-def display_prediction(confidence):
+def display_prediction(pred_class):
     """Load the 23 types/classes of skin diseases"""
-    result = pd.DataFrame({confidence: 'confidence'}, index=np.arange(23))
+    result = pd.DataFrame({pred_class: 'confidence'}, index=np.arange(23))
     result = result.reset_index()
-    result.columns = ['Classes', 'confidence']
+    result.columns = ['probability', 'classes']
     lesion_type_dict = {'Nail Fungus and other Nail Disease':0,'Tinea Ringworm Candidiasis and other Fungal Infections':1,
                'Eczema':2,'Psoriasis pictures Lichen Planus':3, 
                'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions':4, 
@@ -75,7 +75,18 @@ def display_prediction(confidence):
                'Poison Ivy  and other Contact Dermatitis':21,
                'Urticaria Hives':22,}
     result["Classes"] = result["Classes"].map(lesion_type_dict)
-    return confidence
+    return result
+
+
+def predict(x_test, model):
+    Y_pred = model.predict(x_test)
+    ynew = Y_pred.argmax(axis=1) #Convert to single digit class
+    Y_pred = np.round(Y_pred, 2)
+    Y_pred = Y_pred*100
+    Y_pred = Y_pred[0].tolist()
+    Y_pred_classes = np.argmax(Y_pred, axis=1)
+    return ynew, Y_pred_classes
+
 
 
 def main():
@@ -132,22 +143,22 @@ def main():
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
-                        predictions = cnn_model.predict(x_test)
-                        normalized_prediction = predictions.argmax(axis=1)
-                        
+                        pred_class, pred_prob = predict(x_test, cnn_model)
+                        result = display_prediction(pred_class)
+                        # normalized_prediction = predictions.argmax(axis=1)
+                        # st.write(normalized_prediction)
 #                         predictions = np.round(predictions, 2)
 #                         predictions = predictions*100
 #                         new_predictions = predictions[0].tolist()
 #                         Y_pred_classes = np.argmax(Y_pred, axis=1)
-                        confidence = round(100 * (np.max(predictions)), 2)
-                        result = display_prediction(confidence)
-                        # st.write(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
-                        # st.write(result)
-                        # st.write(result)
+                        # confidence = round(100 * (np.max(predictions)), 2)
+                        # result = display_prediction(confidence)
+                        st.write(result)
                         if st.checkbox('Display Probability Graph'):
                             fig = px.bar(result, x="Classes",
                                          y="Probability", color='Classes')
                             st.plotly_chart(fig, use_container_width=True)
+
 
     if page == "Upload Your Image":
 
