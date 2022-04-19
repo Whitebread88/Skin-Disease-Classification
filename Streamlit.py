@@ -139,12 +139,12 @@ def main():
                         predictions = predictions.argmax(axis=1)
                         result = display_prediction(predictions)
                         # st.write(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
-                        st.write(result)
                         # st.write(result)
-                        # if st.checkbox('Display Probability Graph'):
-                        #     fig = px.bar(result, x="Classes",
-                        #                  y="Probability", color='Classes')
-                        #     st.plotly_chart(fig, use_container_width=True)
+                        # st.write(result)
+                        if st.checkbox('Display Probability Graph'):
+                            fig = px.bar(result, x="Classes",
+                                         y="Probability", color='Classes')
+                            st.plotly_chart(fig, use_container_width=True)
 
     if page == "Upload Your Image":
 
