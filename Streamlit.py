@@ -77,7 +77,7 @@ def display_prediction(pred_prob):
                'Herpes HPV and other STDs':20,
                'Poison Ivy  and other Contact Dermatitis':21,
                'Urticaria Hives':22,}
-    result["classes"] = result["classes"].map(lesion_type_dict)
+    result["probability"] = result["probability"].map(lesion_type_dict)
     return result
 
 
