@@ -193,18 +193,18 @@ def main():
             st.subheader("Choose Training Algorithm!")
             if st.checkbox('Keras'):
                 cnn_model = tf.keras.models.load_model('dermnet.h5')
-                    st.success("Hooray !! Keras Model Loaded!")
-                    if st.checkbox('Show Prediction Probablity on Sample Data'):
-                        x_test = data_gen_upload('test photo.jpg')
-                        pred_prob, pred_class = predict(x_test, cnn_model)
-                        result = display_prediction(pred_prob)
-                        predicted_class = display_prediction.variable[np.argmax(pred_class[0])]
-                        st.write("The predicted Skin Disease is: ",predicted_class)
-                        st.write(result)
-                        if st.checkbox('Display Probability Graph'):
-                            fig = px.bar(result, x="Classes",
-                                         y="Probability", color='Classes')
-                            st.plotly_chart(fig, use_container_width=True)
+                st.success("Hooray !! Keras Model Loaded!")
+                if st.checkbox('Show Prediction Probablity on Sample Data'):
+                    x_test = data_gen_upload('test photo.jpg')
+                    pred_prob, pred_class = predict(x_test, cnn_model)
+                    result = display_prediction(pred_prob)
+                    predicted_class = display_prediction.variable[np.argmax(pred_class[0])]
+                    st.write("The predicted Skin Disease is: ",predicted_class)
+                    st.write(result)
+                    if st.checkbox('Display Probability Graph'):
+                        fig = px.bar(result, x="Classes",
+                                     y="Probability", color='Classes')
+                        st.plotly_chart(fig, use_container_width=True)
 
 
 main()
