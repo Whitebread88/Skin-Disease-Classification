@@ -85,7 +85,7 @@ def display_prediction(pred_prob):
 def predict(x_test, model):
     Y_pred = model.predict(x_test)
     Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
-    Y_prob = np.round(Y_prob, 2)
+    Y_prob = np.round(Y_pred, 2)
     Y_prob = Y_prob*100  
     Y_prob = Y_prob[0].tolist()
     
