@@ -22,6 +22,7 @@ import plotly.express as px
 import cv2
 
 
+
 def render_header():
     st.write("""
         <p align="center"> 
@@ -49,9 +50,9 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
-def load_model():
-    model = tf.keras.models.load_model('my_tf_model')
-    return model
+# def load_model():
+#     model = tf.keras.models.load_model('my_tf_model')
+#     return model
 
 
 @st.cache
@@ -136,6 +137,7 @@ def main():
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
                     cnn_model = tf.keras.models.load_model('my_tf_model')
+                    cnn_model.to_json()
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
@@ -188,7 +190,8 @@ def main():
                 st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
             st.subheader("Choose Training Algorithm!")
             if st.checkbox('Keras'):
-                cnn_model = tf.keras.models.load_model('my_tf_model',custom_objects={"tf": tf})
+                cnn_model = tf.keras.models.load_model('my_tf_model')
+                cnn_model.to_json()
                 st.success("Hooray !! Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity for Uploaded Image'):
                     Y_pred_classes = cnn_model.predict(x_test)
