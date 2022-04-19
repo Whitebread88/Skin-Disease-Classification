@@ -48,9 +48,9 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
-def display_prediction(pred_class):
+def display_prediction(pred_prob):
     """Load the 23 types/classes of skin diseases"""
-    result = pd.DataFrame({pred_class: 'confidence'}, index=np.arange(23))
+    result = pd.DataFrame({pred_prob: 'confidence'}, index=np.arange(23))
     result = result.reset_index()
     result.columns = ['probability', 'classes']
     lesion_type_dict = {'Nail Fungus and other Nail Disease':0,'Tinea Ringworm Candidiasis and other Fungal Infections':1,
@@ -80,13 +80,10 @@ def display_prediction(pred_class):
 
 def predict(x_test, model):
     Y_pred = model.predict(x_test)
-    ynew = Y_pred.argmax(axis=1) #Convert to single digit class
-    Y_pred = np.round(Y_pred, 2)
-    Y_pred = Y_pred*100
-    Y_pred = Y_pred[0].tolist()
-    Y_pred_classes = Y_pred.argmax(axis=1)
-    return ynew, Y_pred_classes
-
+    Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
+    Y_prob = round(100 * (np.max(Y_pred)), 2)
+    
+    return Y_prob, Y_pred_classes
 
 
 def main():
@@ -143,8 +140,8 @@ def main():
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
-                        pred_class, pred_prob = predict(x_test, cnn_model)
-                        result = display_prediction(pred_class)
+                        pred_prob, pred_class = predict(x_test, cnn_model)
+                        result = display_prediction(pred_prob)
                         # normalized_prediction = predictions.argmax(axis=1)
                         # st.write(normalized_prediction)
 #                         predictions = np.round(predictions, 2)
