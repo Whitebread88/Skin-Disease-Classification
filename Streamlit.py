@@ -161,7 +161,7 @@ def main():
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
                         predicted_class, confidence = predict(cnn_model, x_test)
-                        plt.title(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
+                        st.write(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
                         # st.write(pred_classes)
                         # st.write(result)
                         # if st.checkbox('Display Probability Graph'):
