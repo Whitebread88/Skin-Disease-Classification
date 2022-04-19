@@ -57,7 +57,7 @@ def display_prediction(pred_prob):
     result = result.reset_index()
     result.columns = ['Classes', 'Probability']
     lesion_type_dict = {22:'Nail Fungus and other Nail Disease',21:'Tinea Ringworm Candidiasis and other Fungal Infections',
-                       20:'Eczema':2,19:'Psoriasis pictures Lichen Planus', 
+                       20:'Eczema',19:'Psoriasis pictures Lichen Planus', 
                        18:'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions', 
                        17:'Warts Molluscum and other Viral Infections', 
                        16:'Seborrheic Keratoses and other Benign Tumors',
