@@ -148,14 +148,8 @@ def main():
                         x_test = data_gen_upload('test photo.jpg')
                         pred_prob, pred_class = predict(x_test, cnn_model)
                         result = display_prediction(pred_prob)
-                        # normalized_prediction = predictions.argmax(axis=1)
-                        # st.write(normalized_prediction)
-#                         predictions = np.round(predictions, 2)
-#                         predictions = predictions*100
-#                         new_predictions = predictions[0].tolist()
-#                         Y_pred_classes = np.argmax(Y_pred, axis=1)
-                        # confidence = round(100 * (np.max(predictions)), 2)
-                        # result = display_prediction(confidence)
+                        predicted_class = Classes[np.argmax(predictions[0])]
+                        st.write("The predicted Skin Disease is: ",predicted_class)
                         st.write(result)
                         if st.checkbox('Display Probability Graph'):
                             fig = px.bar(result, x="Classes",
