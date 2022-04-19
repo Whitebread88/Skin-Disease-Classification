@@ -49,7 +49,7 @@ def data_gen_upload(x):
 
 
 @st.cache
-def load_classes():
+def display_prediction(X_Class):
     """Load the 23 types/classes of skin diseases"""
     result = pd.DataFrame({X_Class: 'confidence'}, index=np.arange(23))
     result = result.reset_index()
@@ -76,15 +76,9 @@ def load_classes():
                'Poison Ivy  and other Contact Dermatitis':21,
                'Urticaria Hives':22,}
     result["Classes"] = result["Classes"].map(lesion_type_dict)
-
-
-def predict(model, img):
-    load_classes()
-    predictions = model.predict(img)
-    predictions = predictions.argmax(axis=1)
     predicted_class = result[predictions]
-    confidence = round(100 * (np.max(predictions[0])), 2)
-    return predicted_class, confidence
+    confidence = round(100 * (np.max(predictions)), 2)
+    return confidence
 
 
 def main():
@@ -141,9 +135,11 @@ def main():
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
-                        predicted_class, confidence = predict(cnn_model, x_test)
-                        st.write(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
-                        # st.write(pred_classes)
+                        predictions = model.predict(x_test)
+                        predictions = predictions.argmax(axis=1)
+                        result = display_prediction(predictions)
+                        # st.write(f"\n Predicted: {predicted_class}.\n Confidence: {confidence}%")
+                        st.write(result)
                         # st.write(result)
                         # if st.checkbox('Display Probability Graph'):
                         #     fig = px.bar(result, x="Classes",
