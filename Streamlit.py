@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 import tensorflow as tf
+from keras import backend as K
 import plotly.express as px
 import cv2
 # import tensorflow.keras.backend.tensorflow_backend as tb
@@ -79,11 +80,12 @@ def display_prediction(pred_prob):
 
 def predict(x_test, model):
     Y_pred = model.predict(x_test)
+    K.clear_session()
     Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
     Y_prob = np.round(Y_pred, 2)
     Y_prob = Y_prob*100  
     Y_prob = Y_prob[0].tolist()
-    
+    K.clear_session()
     return Y_prob, Y_pred_classes
 
 
