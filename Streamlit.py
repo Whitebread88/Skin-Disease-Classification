@@ -86,7 +86,7 @@ def predict(x_test, model):
     Y_pred = model.predict(x_test)
     Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
     Y_prob = round(100 * (np.max(Y_pred)), 2)
-    Y_prob = Y_prob[0].tolist()
+    Y_prob = Y_prob.tolist()
     
     return Y_prob, Y_pred_classes
 
