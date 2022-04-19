@@ -53,31 +53,31 @@ def data_gen_upload(x):
 
 def display_prediction(pred_prob):
     """Load the 23 types/classes of skin diseases"""
-    result = pd.DataFrame({pred_prob: 'confidence'}, index=np.arange(23))
+    result = pd.DataFrame({'Probability': pred_prob}, index=np.arange(23))
     result = result.reset_index()
-    result.columns = ['probability', 'classes']
-    lesion_type_dict = {'Nail Fungus and other Nail Disease':0,'Tinea Ringworm Candidiasis and other Fungal Infections':1,
-               'Eczema':2,'Psoriasis pictures Lichen Planus':3, 
-               'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions':4, 
-               'Warts Molluscum and other Viral Infections':5, 
-               'Seborrheic Keratoses and other Benign Tumors': 6,
-               'Acne and Rosacea':7,
-               'Light Diseases and Disorders of Pigmentation':8,
-               'Bullous Disease':9,
-               'Melanoma Skin Cancer Nevi and Moles':10,
-               'Exanthems and Drug Eruptions':11,
-               'Vasculitis':12,
-               'Scabies Lyme Disease and other Infestations and Bites':13,
-               'Atopic Dermatitis':14,
-               'Vascular Tumors':15,
-               'Lupus and other Connective Tissue diseases':16,
-               'Cellulitis Impetigo and other Bacterial Infections':17,
-               'Systemic Disease':18,
-               'Hair Loss  Alopecia and other Hair Diseases':19,
-               'Herpes HPV and other STDs':20,
-               'Poison Ivy  and other Contact Dermatitis':21,
-               'Urticaria Hives':22,}
-    result["probability"] = result["probability"].map(lesion_type_dict)
+    result.columns = ['Classes', 'Probability']
+    lesion_type_dict = {22:'Nail Fungus and other Nail Disease',21:'Tinea Ringworm Candidiasis and other Fungal Infections',
+                       20:'Eczema':2,19:'Psoriasis pictures Lichen Planus', 
+                       18:'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions', 
+                       17:'Warts Molluscum and other Viral Infections', 
+                       16:'Seborrheic Keratoses and other Benign Tumors',
+                       15:'Acne and Rosacea',
+                       14:'Light Diseases and Disorders of Pigmentation',
+                       13:'Bullous Disease',
+                       12:'Melanoma Skin Cancer Nevi and Moles',
+                       11:'Exanthems and Drug Eruptions',
+                       10:'Vasculitis',
+                       9:'Scabies Lyme Disease and other Infestations and Bites',
+                       8:'Atopic Dermatitis',
+                       7:'Vascular Tumors',
+                       6:'Lupus and other Connective Tissue diseases',
+                       5:'Cellulitis Impetigo and other Bacterial Infections',
+                       4:'Systemic Disease',
+                       3:'Hair Loss  Alopecia and other Hair Diseases',
+                       2:'Herpes HPV and other STDs',
+                       1:'Poison Ivy  and other Contact Dermatitis',
+                        0:'Urticaria Hives'}
+    result["Classes"] = result["Classes"].map(lesion_type_dict)
     return result
 
 
@@ -156,8 +156,8 @@ def main():
                         # result = display_prediction(confidence)
                         st.write(result)
                         if st.checkbox('Display Probability Graph'):
-                            fig = px.bar(result, x="classes",
-                                         y="probability", color='classes')
+                            fig = px.bar(result, x="Classes",
+                                         y="Probability", color='Classes')
                             st.plotly_chart(fig, use_container_width=True)
 
 
