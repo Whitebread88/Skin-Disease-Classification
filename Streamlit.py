@@ -135,7 +135,7 @@ def main():
                     st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
-                    cnn_model = load_model()
+                    cnn_model = tf.keras.models.load_model('my_tf_model')
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
@@ -188,7 +188,7 @@ def main():
                 st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
             st.subheader("Choose Training Algorithm!")
             if st.checkbox('Keras'):
-                cnn_model = load_model()
+                cnn_model = tf.keras.models.load_model('my_tf_model')
                 st.success("Hooray !! Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity for Uploaded Image'):
                     Y_pred_classes = cnn_model.predict(x_test)
