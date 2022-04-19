@@ -8,15 +8,10 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from tensorflow import keras
 import keras
 from tensorflow.keras import models, layers
 from tensorflow.keras.layers import Reshape
-from keras.utils.np_utils import to_categorical
-from keras.models import Sequential, load_model
-from keras import backend as K
-import os
-import time
-import io
 from PIL import Image
 import plotly.express as px
 import cv2
@@ -136,8 +131,7 @@ def main():
                     st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
                 st.subheader("Choose Training Algorithm!")
                 if st.checkbox('Keras'):
-                    # cnn_model = tf.keras.models.load_model('my_tf_model')
-                    model2 = cnn_model.to_json(my_tf_model)
+                    cnn_model = keras.models.load_model('my_tf_model')
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
@@ -190,8 +184,7 @@ def main():
                 st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
             st.subheader("Choose Training Algorithm!")
             if st.checkbox('Keras'):
-                # cnn_model = tf.keras.models.load_model('my_tf_model')
-                model2 = cnn_model.to_json(my_tf_model)
+                cnn_model = keras.models.load_model('my_tf_model')
                 st.success("Hooray !! Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity for Uploaded Image'):
                     Y_pred_classes = cnn_model.predict(x_test)
