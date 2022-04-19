@@ -48,6 +48,7 @@ def data_gen_upload(x):
     return rgb_tensor
 
 
+@st.cache
 def display_prediction(pred_prob):
     """Load the 23 types/classes of skin diseases"""
     result = pd.DataFrame({pred_prob: 'confidence'}, index=np.arange(23))
@@ -74,10 +75,11 @@ def display_prediction(pred_prob):
                'Herpes HPV and other STDs':20,
                'Poison Ivy  and other Contact Dermatitis':21,
                'Urticaria Hives':22,}
-    result["Classes"] = result["Classes"].map(lesion_type_dict)
+    result["classes"] = result["classes"].map(lesion_type_dict)
     return result
 
 
+@st.cache
 def predict(x_test, model):
     Y_pred = model.predict(x_test)
     Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
@@ -152,8 +154,8 @@ def main():
                         # result = display_prediction(confidence)
                         st.write(result)
                         if st.checkbox('Display Probability Graph'):
-                            fig = px.bar(result, x="Classes",
-                                         y="Probability", color='Classes')
+                            fig = px.bar(result, x="classes",
+                                         y="probability", color='classes')
                             st.plotly_chart(fig, use_container_width=True)
 
 
