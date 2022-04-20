@@ -73,7 +73,7 @@ def display_prediction(pred_prob):
                        1:'Poison Ivy  and other Contact Dermatitis',
                         0:'Urticaria Hives'}
     result["Classes"] = result["Classes"].map(lesion_type_dict)
-    display_prediction.variable = result["Probability"]
+    display_prediction.variable = result["Classes"]
     return result
 
 
@@ -146,7 +146,9 @@ def main():
                         pred_prob, pred_class = predict(x_test, cnn_model)
                         result = display_prediction(pred_prob)
                         predicted_class = display_prediction.variable[np.argmax(pred_class)]
+                        confidence = round(100 * (pred_class[0]), 2)
                         st.write("The predicted Skin Disease is: ",predicted_class)
+                        st.write("Confidence is: ", confidence)
                         st.write(result)
                         if st.checkbox('Display Probability Graph'):
                             fig = px.bar(result, x="Classes",
