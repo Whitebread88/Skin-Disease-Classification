@@ -148,7 +148,7 @@ def main():
                         predicted_class = display_prediction.variable[np.argmax(pred_class)]
                         confidence = round(100 * (pred_class[0]), 2)
                         st.write("The predicted Skin Disease is: ",predicted_class)
-                        st.write("Confidence is: ", confidence)
+                        st.metric("Confidence is: ", confidence)
                         st.write(result)
                         if st.checkbox('Display Probability Graph'):
                             fig = px.bar(result, x="Classes",
