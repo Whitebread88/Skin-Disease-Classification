@@ -95,6 +95,30 @@ def main():
     st.sidebar.header('Skin Disease Classification')
     st.sidebar.subheader('Choose a page to proceed:')
     page = st.sidebar.selectbox("", ["Sample Data", "Upload Your Image"])
+    st.sidebar.markdown("""
+       Acne and Rosacea
+       Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions
+       Atopic Dermatitis                
+       Bullous Disease
+       Cellulitis Impetigo and other Bacterial Infections
+       Eczema
+       Exanthems and Drug Eruptions
+       Hair Loss  Alopecia and other Hair Diseases
+       Herpes HPV and other STDs
+       Light Diseases and Disorders of Pigmentation
+       Lupus and other Connective Tissue diseases
+       Melanoma Skin Cancer Nevi and Moles
+       Nail Fungus and other Nail Disease
+       Poison Ivy  and other Contact Dermatitis
+       Psoriasis pictures Lichen Planus and related diseases
+       Scabies Lyme Disease and other Infestations and Bites
+       Seborrheic Keratoses and other Benign Tumors
+       Systemic Disease
+       Tinea Ringworm Candidiasis and other Fungal Infections
+       Urticaria Hives
+       Vascular Tumors
+       Vasculitis
+       """)
 
     if page == "Sample Data":
         st.header("Sample Data Skin Disease Classification")
