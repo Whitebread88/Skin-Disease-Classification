@@ -95,10 +95,10 @@ def main():
     st.sidebar.header('Skin Disease Classification')
     st.sidebar.subheader('Choose a page to proceed:')
     page = st.sidebar.selectbox("", ["Sample Data", "Upload Your Image"])
-    st.sidebar.markdown("""
-       Acne and Rosacea
-       Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions
-       Atopic Dermatitis                
+    st.sidebar.write("""
+       1.Acne and Rosacea
+       2.Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions
+       3.Atopic Dermatitis                
        Bullous Disease
        Cellulitis Impetigo and other Bacterial Infections
        Eczema
