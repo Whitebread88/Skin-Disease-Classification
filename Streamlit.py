@@ -145,7 +145,7 @@ def main():
                         x_test = data_gen_upload('test photo.jpg')
                         pred_prob, pred_class = predict(x_test, cnn_model)
                         result = display_prediction(pred_prob)
-                        predicted_class = display_prediction.variable[np.argmax(pred_class[0])]
+                        predicted_class = display_prediction.variable[np.argmax(pred_class)]
                         st.write("The predicted Skin Disease is: ",predicted_class)
                         st.write(result)
                         if st.checkbox('Display Probability Graph'):
@@ -200,7 +200,7 @@ def main():
                     x_test = data_gen_upload('test photo.jpg')
                     pred_prob, pred_class = predict(x_test, cnn_model)
                     result = display_prediction(pred_prob)
-                    predicted_class = display_prediction.variable[np.argmax(pred_class[0])]
+                    predicted_class = display_prediction.variable[np.argmax(pred_class)]
                     st.write("The predicted Skin Disease is: ",predicted_class)
                     st.write(result)
                     if st.checkbox('Display Probability Graph'):
