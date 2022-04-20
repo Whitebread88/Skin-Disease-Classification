@@ -85,8 +85,9 @@ def predict(x_test, model):
     Y_prob = np.round(Y_pred, 2)
     Y_prob = Y_prob*100  
     Y_prob = Y_prob[0].tolist()
+    confidence = round(100 * (np.max(Y_pred[0])), 2)
     K.clear_session()
-    return Y_prob, Y_pred_classes
+    return Y_prob, Y_pred_classes, confidence
 
 
 def main():
@@ -143,10 +144,9 @@ def main():
                     st.success("Hooray !! Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
-                        pred_prob, pred_class = predict(x_test, cnn_model)
+                        pred_prob, pred_class, confidence = predict(x_test, cnn_model)
                         result = display_prediction(pred_prob)
                         predicted_class = display_prediction.variable[np.argmax(pred_class)]
-                        confidence = round(100 * (pred_class[0]), 2)
                         st.write("The predicted Skin Disease is: ",predicted_class)
                         st.metric("Confidence is: ", confidence)
                         st.write(result)
