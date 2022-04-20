@@ -73,7 +73,7 @@ def display_prediction(pred_prob):
                        1:'Poison Ivy  and other Contact Dermatitis',
                         0:'Urticaria Hives'}
     result["Classes"] = result["Classes"].map(lesion_type_dict)
-    display_prediction.variable = result["Classes"]
+    display_prediction.variable = result["Probability"]
     return result
 
 
@@ -82,10 +82,9 @@ def predict(x_test, model):
     Y_pred = model.predict(x_test)
     K.clear_session()
     Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
-    # Y_prob = np.round(Y_pred, 2)
-    # Y_prob = Y_prob*100  
-    # Y_prob = Y_prob[0].tolist()
-    Y_prob = round(100 * (Y_pred[0]), 2)
+    Y_prob = np.round(Y_pred, 2)
+    Y_prob = Y_prob*100  
+    Y_prob = Y_prob[0].tolist()
     K.clear_session()
     return Y_prob, Y_pred_classes
 
