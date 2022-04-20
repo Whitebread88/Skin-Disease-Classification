@@ -200,10 +200,11 @@ def main():
                 st.success("Hooray !! Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity on Sample Data'):
                     x_test = data_gen_upload('test photo.jpg')
-                    pred_prob, pred_class = predict(x_test, cnn_model)
+                    pred_prob, pred_class, confidence = predict(x_test, cnn_model)
                     result = display_prediction(pred_prob)
                     predicted_class = display_prediction.variable[np.argmax(pred_class)]
                     st.write("The predicted Skin Disease is: ",predicted_class)
+                    st.metric("Confidence is: ", confidence)
                     st.write(result)
                     if st.checkbox('Display Probability Graph'):
                         fig = px.bar(result, x="Classes",
