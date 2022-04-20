@@ -85,7 +85,7 @@ def predict(x_test, model):
     # Y_prob = np.round(Y_pred, 2)
     # Y_prob = Y_prob*100  
     # Y_prob = Y_prob[0].tolist()
-    Y_prob = round(100 * (np.max(Y_pred[0])), 2)
+    Y_prob = round(100 * (Y_pred[0]), 2)
     K.clear_session()
     return Y_prob, Y_pred_classes
 
