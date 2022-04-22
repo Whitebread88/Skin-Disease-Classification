@@ -41,8 +41,8 @@ def data_gen_upload(x):
 #Display probability of each class
 def display_prediction(pred_prob):
     """Load the 23 types/classes of skin diseases"""
-    result = pd.DataFrame({'Probability': pred_prob}, index=np.arange(23))
-    result = result.reset_index()
+    result = pd.DataFrame({'Probability': pred_prob})
+    # result = result.reset_index()
     result.columns = ['Classes', 'Probability']
     lesion_type_dict = {22:'Nail Fungus and other Nail Disease',21:'Tinea Ringworm Candidiasis and other Fungal Infections',
                        20:'Eczema',19:'Psoriasis pictures Lichen Planus', 
@@ -53,8 +53,8 @@ def display_prediction(pred_prob):
                        14:'Light Diseases and Disorders of Pigmentation',
                        13:'Bullous Disease',
                        12:'Melanoma Skin Cancer Nevi and Moles',
-                       10:'Exanthems and Drug Eruptions',
-                       11:'Vasculitis',
+                       11:'Exanthems and Drug Eruptions',
+                       10:'Vasculitis',
                        9:'Scabies Lyme Disease and other Infestations and Bites',
                        8:'Atopic Dermatitis',
                        7:'Vascular Tumors',
