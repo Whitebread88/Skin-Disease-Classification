@@ -77,7 +77,7 @@ def predict(x_test, model):
     Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
     Y_prob = np.round(Y_pred, 2)
     Y_prob = Y_prob*100  
-    Y_prob = Y_prob[0].tolist()
+    Y_prob = Y_prob[0]
     confidence = round(100 * (np.max(Y_pred[0])), 2)
     K.clear_session()
     return Y_prob, Y_pred_classes, confidence
