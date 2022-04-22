@@ -77,7 +77,7 @@ def predict(x_test, model):
     Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
     Y_prob = np.round(Y_pred, 2)
     Y_prob = Y_prob*100  
-    Y_prob = Y_prob[0].tolist()
+    Y_prob = Y_prob.tolist()
     confidence = round(100 * (np.max(Y_pred)), 2)
     K.clear_session()
     return Y_prob, Y_pred_classes, confidence
@@ -237,9 +237,6 @@ def main():
         23. Warts Molluscum and other Viral Infections
         """)
         st.header("Limitations")
-        st.markdown("""
-        The classifier model is trained on 23 different types of skin disease listed below.
-        """)
         st.markdown("""
         1.  Web application and model is not capable of identifying images of skin diseases apart from other objects. 
             The model will attempt to predict any image uploaded by the user. Image processing techniques will also be applied on any image uploaded by the user.
