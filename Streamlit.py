@@ -140,7 +140,7 @@ def main():
                         x_test = data_gen_upload('test photo.jpg')
                         pred_prob, pred_class, confidence = predict(x_test, cnn_model)
                         result = display_prediction(pred_prob)
-                        predicted_class = display_prediction.variable[pred_class]
+                        predicted_class = display_prediction.variable[pred_class[0]]
                         st.write("The predicted Skin Disease is: ",predicted_class)
                         st.metric("Confidence is: ", confidence)
                         st.write(result)
@@ -196,7 +196,7 @@ def main():
                     x_test = data_gen_upload('test photo.jpg')
                     pred_prob, pred_class, confidence = predict(x_test, cnn_model)
                     result = display_prediction(pred_prob)
-                    predicted_class = display_prediction.variable[pred_class]
+                    predicted_class = display_prediction.variable[pred_class[0]]
                     st.write("The predicted Skin Disease is: ",predicted_class)
                     st.metric("Confidence is: ", confidence)
                     st.write(result)
