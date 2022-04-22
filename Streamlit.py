@@ -193,8 +193,8 @@ def main():
                 cnn_model = tf.keras.models.load_model('dermnet')
                 st.success("Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity on Sample Data'):
-                    x_test = data_gen_upload('test photo.jpg')
-                    pred_prob, pred_class, confidence = predict(x_test, cnn_model)
+                    xx_test = data_gen_upload('test photo.jpg')
+                    pred_prob, pred_class, confidence = predict(xx_test, cnn_model)
                     result = display_prediction(pred_prob)
                     predicted_class = display_prediction.variable[pred_class[0]]
                     st.write("The predicted Skin Disease is: ",predicted_class)
