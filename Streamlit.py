@@ -41,8 +41,8 @@ def data_gen_upload(x):
 #Display probability of each class
 def display_prediction(pred_prob):
     """Load the 23 types/classes of skin diseases"""
-    result = pd.DataFrame({'Probability': pred_prob}, index=np.arange(23))
-    result = result.reset_index()
+    result = pd.DataFrame({'Probability': pred_prob})
+    # result = result.reset_index()
     result.columns = ['Classes', 'Probability']
     lesion_type_dict = {22:'Nail Fungus and other Nail Disease',21:'Tinea Ringworm Candidiasis and other Fungal Infections',
                        20:'Eczema',19:'Psoriasis pictures Lichen Planus', 
@@ -77,7 +77,7 @@ def predict(x_test, model):
     Y_pred_classes = Y_pred.argmax(axis=1) #Convert to single digit class
     Y_prob = np.round(Y_pred, 2)
     Y_prob = Y_prob*100  
-    Y_prob = Y_prob.tolist()
+    Y_prob = Y_prob[0].tolist()
     confidence = round(100 * (np.max(Y_pred)), 2)
     K.clear_session()
     return Y_prob, Y_pred_classes, confidence
