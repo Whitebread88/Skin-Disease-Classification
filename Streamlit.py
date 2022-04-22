@@ -41,29 +41,31 @@ def data_gen_upload(x):
 #Display probability of each class
 def display_prediction(pred_prob):
     """Load the 23 types/classes of skin diseases"""
-    result = pd.DataFrame({'Probability': pred_prob})
-    # result = result.reset_index()
+    result = pd.DataFrame({'Probability': pred_prob}, index=np.arange(23))
+    result = result.reset_index()
     result.columns = ['Classes', 'Probability']
-    lesion_type_dict = {22:'Nail Fungus and other Nail Disease',21:'Tinea Ringworm Candidiasis and other Fungal Infections',
-                       20:'Eczema',19:'Psoriasis pictures Lichen Planus', 
-                       18:'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions', 
-                       17:'Warts Molluscum and other Viral Infections', 
-                       16:'Seborrheic Keratoses and other Benign Tumors',
-                       15:'Acne and Rosacea',
-                       14:'Light Diseases and Disorders of Pigmentation',
-                       13:'Bullous Disease',
-                       12:'Melanoma Skin Cancer Nevi and Moles',
-                       11:'Exanthems and Drug Eruptions',
-                       10:'Vasculitis',
-                       9:'Scabies Lyme Disease and other Infestations and Bites',
-                       8:'Atopic Dermatitis',
-                       7:'Vascular Tumors',
-                       6:'Lupus and other Connective Tissue diseases',
-                       5:'Cellulitis Impetigo and other Bacterial Infections',
-                       4:'Systemic Disease',
-                       3:'Hair Loss  Alopecia and other Hair Diseases',
-                       2:'Herpes HPV and other STDs',
-                       1:'Poison Ivy  and other Contact Dermatitis',
+    lesion_type_dict = {22:'Nail Fungus and other Nail Disease',
+                        21:'Tinea Ringworm Candidiasis and other Fungal Infections',
+                        20:'Eczema',
+                        19:'Psoriasis pictures Lichen Planus', 
+                        18:'Actinic Keratosis Basal Cell Carcinoma and other Malignant Lesions', 
+                        17:'Warts Molluscum and other Viral Infections', 
+                        16:'Seborrheic Keratoses and other Benign Tumors',
+                        15:'Acne and Rosacea',
+                        14:'Light Diseases and Disorders of Pigmentation',
+                        13:'Bullous Disease',
+                        12:'Melanoma Skin Cancer Nevi and Moles',
+                        11:'Exanthems and Drug Eruptions',
+                        10:'Vasculitis',
+                        9:'Scabies Lyme Disease and other Infestations and Bites',
+                        8:'Atopic Dermatitis',
+                        7:'Vascular Tumors',
+                        6:'Lupus and other Connective Tissue diseases',
+                        5:'Cellulitis Impetigo and other Bacterial Infections',
+                        4:'Systemic Disease',
+                        3:'Hair Loss  Alopecia and other Hair Diseases',
+                        2:'Herpes HPV and other STDs',
+                        1:'Poison Ivy  and other Contact Dermatitis',
                         0:'Urticaria Hives'}
     result["Classes"] = result["Classes"].map(lesion_type_dict)
     display_prediction.variable = result["Classes"]
@@ -78,7 +80,7 @@ def predict(x_test, model):
     Y_prob = np.round(Y_pred, 2)
     Y_prob = Y_prob*100  
     Y_prob = Y_prob[0]
-    confidence = round(100 * (np.max(Y_pred[0])), 2)
+    confidence = round(100 * (np.max(Y_pred)), 2)
     K.clear_session()
     return Y_prob, Y_pred_classes, confidence
 
@@ -134,13 +136,13 @@ def main():
                     st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
                 st.subheader("Load Classifier Model")
                 if st.checkbox('Keras'):
-                    cnn_model = tf.keras.models.load_model('dermnet')
+                    cnn_model = tf.keras.models.load_model('dermnet2')
                     st.success("Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
                         pred_prob, pred_class, confidence = predict(x_test, cnn_model)
                         result = display_prediction(pred_prob)
-                        predicted_class = display_prediction.variable[pred_class[0]]
+                        predicted_class = display_prediction.variable[pred_class]
                         st.write("The predicted Skin Disease is: ",predicted_class)
                         st.metric("Confidence is: ", confidence)
                         st.write(result)
@@ -190,13 +192,13 @@ def main():
                 st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
             st.subheader("Load Classifier Model")
             if st.checkbox('Keras'):
-                cnn_model = tf.keras.models.load_model('dermnet')
+                cnn_model = tf.keras.models.load_model('dermnet2')
                 st.success("Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity on Sample Data'):
                     xx_test = data_gen_upload('test photo.jpg')
                     pred_prob, pred_class, confidence = predict(xx_test, cnn_model)
                     result = display_prediction(pred_prob)
-                    predicted_class = display_prediction.variable[pred_class[0]]
+                    predicted_class = display_prediction.variable[pred_class]
                     st.write("The predicted Skin Disease is: ",predicted_class)
                     st.metric("Confidence is: ", confidence)
                     st.write(result)
