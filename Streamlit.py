@@ -206,7 +206,7 @@ def main():
                         st.plotly_chart(fig, use_container_width=True)
                         
     
-    if page = "Information":
+    if page == "Information":
         st.header("Information")
         st.markdown("""
         The classifier model is trained on 23 different types of skin disease listed below.
