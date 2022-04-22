@@ -136,7 +136,7 @@ def main():
                     st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
                 st.subheader("Load Classifier Model")
                 if st.checkbox('Keras'):
-                    cnn_model = tf.keras.models.load_model('dermnet2')
+                    cnn_model = tf.keras.models.load_model('dermnet')
                     st.success("Keras Model Loaded!")
                     if st.checkbox('Show Prediction Probablity on Sample Data'):
                         x_test = data_gen_upload('test photo.jpg')
@@ -192,7 +192,7 @@ def main():
                 st.image(output_image, caption='Detect Blobs on image', use_column_width=True, clamp=True)
             st.subheader("Load Classifier Model")
             if st.checkbox('Keras'):
-                cnn_model = tf.keras.models.load_model('dermnet')
+                cnn_model = tf.keras.models.load_model('dermnet2')
                 st.success("Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity on Sample Data'):
                     xx_test = data_gen_upload('test photo.jpg')
@@ -248,8 +248,5 @@ def main():
         3.  Due to the possibility of false positive or false negative, users are advised to seek proper diagnosis from a medical professional. 
             Model classifier is only for pre-diagnosis and not a definitive diagnosis.
         """)
-    
-    
-    
     
 main()
