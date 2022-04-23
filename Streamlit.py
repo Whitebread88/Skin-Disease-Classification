@@ -201,7 +201,7 @@ def main():
                     predicted_class2 = display_prediction.variable[pred_class2]
                     st.write("The predicted Skin Disease is: ",predicted_class2)
                     st.metric("Confidence is: ", confidence2)
-                    st.write(result)
+                    st.write(result2)
                     if st.checkbox('Display Probability Graph'):
                         fig = px.bar(result2, x="Classes",
                                      y="Probability", color='Classes')
