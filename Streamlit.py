@@ -196,14 +196,14 @@ def main():
                 st.success("Keras Model Loaded!")
                 if st.checkbox('Show Prediction Probablity on uploaded image'):
                     xx_test = data_gen_upload('test photo.jpg')
-                    pred_prob, pred_class, confidence = predict(xx_test, cnn_model)
-                    result = display_prediction(pred_prob)
-                    predicted_class = display_prediction.variable[pred_class]
-                    st.write("The predicted Skin Disease is: ",predicted_class)
-                    st.metric("Confidence is: ", confidence)
+                    pred_prob2, pred_class2, confidence2 = predict(xx_test, cnn_model)
+                    result2 = display_prediction(pred_prob2)
+                    predicted_class2 = display_prediction.variable[pred_class2]
+                    st.write("The predicted Skin Disease is: ",predicted_class2)
+                    st.metric("Confidence is: ", confidence2)
                     st.write(result)
                     if st.checkbox('Display Probability Graph'):
-                        fig = px.bar(result, x="Classes",
+                        fig = px.bar(result2, x="Classes",
                                      y="Probability", color='Classes')
                         st.plotly_chart(fig, use_container_width=True)
                         
