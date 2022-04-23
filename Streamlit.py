@@ -194,7 +194,7 @@ def main():
             if st.checkbox('Keras'):
                 cnn_model = tf.keras.models.load_model('dermnet2')
                 st.success("Keras Model Loaded!")
-                if st.checkbox('Show Prediction Probablity on Sample Data'):
+                if st.checkbox('Show Prediction Probablity on uploaded image'):
                     xx_test = data_gen_upload('test photo.jpg')
                     pred_prob, pred_class, confidence = predict(xx_test, cnn_model)
                     result = display_prediction(pred_prob)
